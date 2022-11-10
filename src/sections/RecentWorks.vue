@@ -74,7 +74,9 @@ export default {
 
     const worksObserver = new IntersectionObserver(
       function (entries) {
-        entries[0].target.classList.add("active");
+        if (entries[0] && entries[0].isIntersecting) {
+          entries[0].target.classList.add("active");
+        }
       },
       {
         root: null,
@@ -85,7 +87,9 @@ export default {
 
     const titleObserver = new IntersectionObserver(
       function (entries) {
-        entries[0].target.classList.add("active");
+        if (entries[0] && entries[0].isIntersecting) {
+          entries[0].target.classList.add("active");
+        }
       },
       {
         root: null,
