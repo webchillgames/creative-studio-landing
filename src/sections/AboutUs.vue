@@ -1,19 +1,19 @@
 <template>
   <div class="s-about-us">
-    <div v-for="v in data.titles" :key="v.id">
+    <div v-for="v in DATA.titles" :key="v.id">
       {{ v.text }}
     </div>
 
-    <p v-for="v in data.paragraphs" :key="v.id" class="s-about-us__paragraph">
+    <p v-for="v in DATA.paragraphs" :key="v.id" class="s-about-us__paragraph">
       {{ v.text }}
     </p>
 
-    <p>{{ data.message }}</p>
+    <p>{{ DATA.message }}</p>
   </div>
 </template>
 
 <script>
-const data = {
+const DATA = {
   titles: [
     { id: 1, text: "We are Creative" },
     { id: 2, text: "We are Xen" },
@@ -35,7 +35,7 @@ const data = {
 export default {
   setup() {
     return {
-      data,
+      DATA,
     };
   },
 };
