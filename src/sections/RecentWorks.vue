@@ -6,23 +6,23 @@
     <p class="s-recent-works__subtitle">We Offer Digital Solutions</p>
 
     <div
-      class="s-recent-works__work"
+      class="s-recent-works__work work"
       v-for="v in DATA"
       :key="v.id"
       ref="workRef"
     >
-      <div class="s-recent-works__block">
-        <p class="s-recent-works__type">{{ v.type }}</p>
-        <h3 class="s-recent-works__title">
+      <div class="work__block work__block--text">
+        <p class="work__type">{{ v.type }}</p>
+        <h3 class="work__title">
           <span v-for="(t, i) in v.title" :key="i">{{ t }}</span>
         </h3>
 
-        <p ref="textRef">{{ v.text }}</p>
+        <p ref="textRef" class="work__text">{{ v.text }}</p>
 
-        <!-- button  -->
+        <CButton />
       </div>
 
-      <div class="s-recent-works__block">
+      <div class="work__block work__block--img">
         <img :src="v.img" :alt="v.imgAlt" />
       </div>
     </div>
@@ -31,42 +31,12 @@
 
 <script>
 import { onMounted, ref } from "vue";
+// import { onIntersect } from "@/composables/onIntersect";
+import { RECENT_WORKS as DATA } from "@/data.js";
+import CButton from "../components/CButton.vue";
 
-const DATA = [
-  {
-    id: 1,
-    img: "/works/dron.jpeg",
-    imgAlt: "dron",
-    title: ["Bushwick selfies", "pork belly lyft", "brooklyn messeng"],
-    type: "Commercial",
-    text: "Narwhal pop-up intelligentsia tbh pinterest, microdosing tilde cloud bread gochujang tattooed leggings cornhole 8-bit. Austin fam chia cold-pressed raw denim. Glossier drinking vinegar portland lo-fi, polaroid bespoke lomo. Banjo art party XOXO, fashion axe sustainable retro ethical gentrify.",
-  },
-  {
-    id: 2,
-    img: "/works/audio.jpg",
-    imgAlt: "cassette",
-    title: ["tumeric tumblr", "gluten-free", "Man bun small"],
-    type: "Graphic Design",
-    text: "Slow-carb green juice subway tile bicycle rights, fanny pack raclette palo santo put a bird on it mustache actually fam mumblecore iPhone. Iceland post-ironic health goth snackwave, mixtape synth four dollar toast sartorial. Health goth la croix vexillologist, before they sold out shabby chic.",
-  },
-  {
-    id: 3,
-    img: "/works/column.jpg",
-    imgAlt: "column",
-    title: ["batch kombucha", "subway tile", "salvia brooklyn"],
-    type: "Branding",
-    text: "Mlkshk YOLO wolf, leggings vinyl crucifix stumptown tousled. Pabst venmo gentrify deep v microdosing migas occupy master cleanse intelligentsia sartorial chia activated charcoal. Iceland small batch live-edge raclette roof party dreamcatcher austin pickled. Chillwave cronut messenger bag truffaut.",
-  },
-  {
-    id: 4,
-    img: "/works/chocolate.jpg",
-    imgAlt: "ice-cream",
-    title: ["organic activated", "charcoal vape", "viral ennui"],
-    type: "Web design",
-    text: "Tote bag cornhole pork belly swag, cronut hoodie snackwave 90's messenger bag pour-over disrupt chartreuse. Vape ugh cardigan hell of. Vaporware umami master cleanse neutra, chartreuse flexitarian lo-fi selvage hella hoodie freegan gentrify. 8-bit air plant umami asymmetrical franzen semiotics before.",
-  },
-];
 export default {
+  components: { CButton },
   setup() {
     const workRef = ref([]);
     const textRef = ref([]);
@@ -112,6 +82,7 @@ export default {
       // blockRef,
       textRef,
       DATA,
+      CButton,
     };
   },
 };
@@ -119,11 +90,95 @@ export default {
 
 <style lang="scss" scoped>
 .s-recent-works {
+  padding-top: 120px;
   text-align: center;
 
-  &__work {
+  &__main-title {
+    @include coveredText($dark-color);
+    @include BlockCoveringText(#fff, 0.5s, 0s);
+
+    h2 {
+      font-size: 50px;
+      line-height: 55px;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin: 0;
+    }
+  }
+
+  &__subtitle {
+    opacity: 0;
+    transition: opacity 0.5s ease-in 0.3s;
+
+    position: relative;
+  }
+
+  &__main-title.active {
+    &::after {
+      transform: translate3d(100%, 0, 0);
+    }
+
+    & + .s-recent-works__subtitle {
+      opacity: 1;
+    }
+  }
+}
+
+.work {
+  display: flex;
+
+  padding-bottom: 90px;
+
+  &:nth-child(2n) {
+    .work__block--text {
+      order: 1;
+    }
+  }
+
+  &__type {
+    margin: 0;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    font-size: 14px;
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: 0px;
+
+    @include coveredText($accent-color);
+
+    @include BlockCoveringText($accent-color, 0.2s);
+  }
+
+  &__title {
     display: flex;
-    height: 415px; //понять откуда это число
+    flex-direction: column;
+    margin: 0;
+    font-weight: 500;
+    letter-spacing: 2px;
+    line-height: 1;
+    font-size: 28px;
+
+    span {
+      margin: 0;
+      align-self: flex-start;
+      letter-spacing: 1px;
+
+      @include coveredText($dark-color);
+
+      @include BlockCoveringText($dark-color, 0.2s, 0.2s);
+    }
+
+    span:nth-child(2) {
+      @include BlockCoveringText($dark-color, 0.2s, 0.3s);
+    }
+
+    span:nth-child(3) {
+      @include BlockCoveringText($dark-color, 0.3s, 0.4s);
+    }
+
+    span + span {
+      margin-top: 4px;
+    }
   }
 
   &__block {
@@ -145,89 +200,62 @@ export default {
     }
   }
 
-  &__main-title {
-    @include coveredText($dark-color);
-
-    h2 {
-      font-size: 50px;
-      line-height: 55px;
-      font-weight: 600;
-      // color: $dark-color;
-      text-transform: uppercase;
-      margin: 0;
-    }
-
-    @include BlockCoveringText(#fff, 0.5s, 0s);
-  }
-
-  &__subtitle {
-    opacity: 0;
-    transition: opacity 0.5s ease-in 0.3s;
-
+  &__block--img {
     position: relative;
-  }
+    background-color: #262626;
 
-  &__type {
-    @include coveredText($accent-color);
-
-    @include BlockCoveringText($accent-color, 0.5s, 0s);
-  }
-
-  &__main-title.active {
-    &::after {
-      transform: translate3d(100%, 0, 0);
-    }
-
-    & + .s-recent-works__subtitle {
-      opacity: 1;
+    img {
+      width: 0;
+      transition: width 0.5s ease-out 0.7s;
     }
   }
 
-  &__title {
+  &__block--text {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 20px;
+    padding-bottom: 0;
 
-    span {
-      margin: 8px 0;
-      align-self: flex-start;
+    .c-button {
+      max-width: 70%;
+      margin-top: 40px;
+      opacity: 0;
+      transform: translate3d(0, 10%, 0);
+    }
+
+    .work__text {
+      margin-top: 40px;
+      color: #888888;
+      font-size: 14px;
+      line-height: 2.15;
+      font-weight: 400;
       letter-spacing: 1px;
-      @include coveredText($dark-color);
+      font-family: "Open Sans", sans-serif;
 
-      @include BlockCoveringText($dark-color, 0.3s, 0s);
-    }
-
-    span:nth-child(2) {
-      @include BlockCoveringText($dark-color, 0.2s, 0.1s);
-    }
-
-    span:nth-child(2) {
-      @include BlockCoveringText($dark-color, 0.3s, 0.2s);
+      opacity: 0;
+      transform: translate3d(0, 10%, 0);
     }
   }
 }
 
 .s-recent-works__work.active {
-  .s-recent-works__type,
-  .s-recent-works__title span {
-    &::after {
-      transform: translate3d(100%, 0, 0);
-    }
+  .work__type::after,
+  .work__title span::after {
+    transform: translate3d(110%, 0, 0);
   }
 
-  // .s-recent-works__title {
-  //   span {
-  //     &::after {
-  //       transform: translate3d(100%, 0, 0);
-  //     }
-  //   }
+  .work__text {
+    @include animation(slideUp, 0.4s, ease-out, 1, forwards, _, 0.3s);
+  }
 
-  //   span:nth-child(2) {
-  //     transition-delay: 0.2s;
-  //   }
+  .c-button {
+    @include animation(slideUp, 0.2s, ease-out, 1, forwards, _, 1s);
+  }
 
-  //   span:nth-child(3) {
-  //     transition-delay: 0.6s;
-  //   }
-  // }
+  .work__block--img img {
+    width: 100%;
+  }
 }
 </style>

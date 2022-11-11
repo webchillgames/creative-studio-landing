@@ -1,49 +1,56 @@
 <template>
-  <div class="s-about-us">
+  <div class="s-about-us" ref="sectionRef">
     <div class="s-about-us__titles">
       <div
         v-for="v in DATA.titles"
         :key="v.id"
         class="s-about-us__title"
         :data-text="v.text"
+        ref="titleRef"
       >
         {{ v.text }}
       </div>
     </div>
 
-    <div class="s-about-us__paragraphs">
+    <div class="paragraphs">
       <p v-for="v in DATA.paragraphs" :key="v.id">
         {{ v.text }}
       </p>
     </div>
 
-    <p class="s-about-us__message">{{ DATA.message }}</p>
+    <p class="paragraphs__message">{{ DATA.message }}</p>
   </div>
 </template>
 
 <script>
-const DATA = {
-  message: "Godard slow-carb chartreuse occupy, tumblr letterpress",
-  titles: [
-    { id: 1, text: "We are Creative" },
-    { id: 2, text: "We are Xen" },
-  ],
+import { onMounted, ref } from "vue";
 
-  paragraphs: [
-    {
-      id: 1,
-      text: "Affogato thundercats quinoa, portland cold-pressed edison bulb artisan paleo banjo tousled try-hard food truck pop-up bushwick godard. Occupy 90s try-hard tote bag chicharrones stumptown polaroid hashtag cliche +1, tousled fanny pack. Tote bag iPhone crucifix hella helvetica food truck bicycle rights cloud bread. Yr iPhone asymmetrical, next level vexillologist godard blog green juice chia. Tacos jean shorts pickled PBR&B poutine.",
-    },
-    {
-      id: 2,
-      text: "Godard slow-carb chartreuse occupy, tumblr letterpress pok pok tattooed yr lyft yuccie kinfolk. IPhone kombucha shaman gastropub snackwave 90's lo-fi pug chillwave pok pok tofu. Swag deep v listicle roof party seitan man braid raclette church-key trust fund locavore vexillologist green juice raw denim tilde meh. Austin thundercats locavore taiyaki snackwave hoodie put a bird on it tattooed selvage kitsch ramps. ",
-    },
-  ],
-};
+import { ABOUT_US as DATA } from "@/data.js";
+
 export default {
   setup() {
+    const sectionRef = ref({});
+
+    const titleObserver = new IntersectionObserver(
+      (entries) => {
+        if (entries[0] && entries[0].isIntersecting) {
+          entries[0].target.classList.add("active");
+        }
+      },
+      {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.2,
+      }
+    );
+
+    onMounted(() => {
+      titleObserver.observe(sectionRef.value);
+    });
+
     return {
       DATA,
+      sectionRef,
     };
   },
 };
@@ -54,43 +61,28 @@ export default {
   padding: 120px 20px;
   background-color: #000;
 
-  &__paragraphs {
-    display: flex;
-
-    p {
-      color: #fff;
-      font-size: 16px;
-      line-height: 1.8;
-      font-weight: 600;
-      letter-spacing: 0px;
-      font-family: "Open Sans", sans-serif;
-    }
-
-    p + p {
-      margin-left: 30px;
+  &__title:first-child {
+    &::after {
+      transition: width 1s ease-out;
     }
   }
 
-  &__message {
-    margin: 0;
-    margin-top: 60px;
-    color: #fff;
-    text-align: center;
-    font-weight: 400;
-    letter-spacing: 5px;
-    font-family: "Oswald", sans-serif;
+  &__title:last-child {
+    &::after {
+      transition: width 0.6s ease-out;
+    }
   }
 
   &__title {
     text-transform: uppercase;
     position: relative;
     font-size: 50px;
+    line-height: 65px;
     font-weight: 600;
-    font-family: "Oswald", sans-serif;
 
     &::after {
       color: $accent-color;
-      animation: coloring 1s ease-out 0s infinite;
+      width: 0;
     }
 
     &::before {
@@ -115,15 +107,53 @@ export default {
   }
 }
 
-@keyframes coloring {
-  0% {
-    width: 0;
-    // transform: scale(0) translate3d(-100%, 0, 0);
+.paragraphs {
+  display: flex;
+
+  &__message {
+    margin: 0;
+    margin-top: 60px;
+    color: #fff;
+    text-align: center;
+    font-weight: 400;
+    letter-spacing: 5px;
+
+    transform: translate3d(0, 5%, 0);
+    opacity: 0;
+
+    @include animation(slideUp, 0.3s, ease-out, 1, forwards, _, 0.9s);
   }
 
-  100% {
+  p {
+    color: #fff;
+    font-size: 16px;
+    line-height: 1.8;
+    font-weight: 600;
+    letter-spacing: 0px;
+    font-family: "Open Sans", sans-serif;
+
+    transform: translate3d(0, 10%, 0);
+    opacity: 0;
+
+    @include animation(slideUp, 0.6s, ease-out, 1, forwards, _, _);
+  }
+
+  p + p {
+    margin-left: 30px;
+  }
+
+  p:first-child {
+    animation-delay: 0.5s;
+  }
+
+  p:last-child {
+    animation-delay: 0.7s;
+  }
+}
+
+.s-about-us.active {
+  .s-about-us__title::after {
     width: 100%;
-    // transform: scale(1) translate3d(0, 0, 0);
   }
 }
 </style>
