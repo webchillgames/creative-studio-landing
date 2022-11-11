@@ -2,6 +2,7 @@
   <div>
     <AboutUs ref="aboutUsRef" />
     <RecentWorks ref="scrollRef" />
+    <OurClients />
   </div>
 </template>
 
@@ -11,9 +12,10 @@ import RecentWorks from "@/sections/RecentWorks.vue";
 
 import { onIntersect } from "./composables/onIntersect";
 import { onMounted, onUnmounted, ref } from "vue";
+import OurClients from './sections/OurClients.vue';
 
 export default {
-  components: { AboutUs, RecentWorks },
+  components: { AboutUs, RecentWorks, OurClients },
 
   setup() {
     const observer = ref({});
@@ -61,6 +63,7 @@ export default {
       RecentWorks,
       scrollRef,
       aboutUsRef,
+      OurClients,
     };
   },
 };

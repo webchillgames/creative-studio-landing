@@ -1,24 +1,26 @@
 <template>
   <div class="s-about-us" ref="sectionRef">
-    <div class="s-about-us__titles">
-      <div
-        v-for="v in DATA.titles"
-        :key="v.id"
-        class="s-about-us__title"
-        :data-text="v.text"
-        ref="titleRef"
-      >
-        {{ v.text }}
+    <div class="container small">
+      <div class="s-about-us__titles">
+        <div
+          v-for="v in DATA.titles"
+          :key="v.id"
+          class="s-about-us__title"
+          :data-text="v.text"
+          ref="titleRef"
+        >
+          {{ v.text }}
+        </div>
       </div>
-    </div>
 
-    <div class="paragraphs">
-      <p v-for="v in DATA.paragraphs" :key="v.id">
-        {{ v.text }}
-      </p>
-    </div>
+      <div class="paragraphs">
+        <p v-for="v in DATA.paragraphs" :key="v.id">
+          {{ v.text }}
+        </p>
+      </div>
 
-    <p class="paragraphs__message">{{ DATA.message }}</p>
+      <p class="paragraphs__message">{{ DATA.message }}</p>
+    </div>
   </div>
 </template>
 

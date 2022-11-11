@@ -4,3 +4,11 @@ body {
     font-size: 18px;
     line-height: 24px;
 }
+
+.container {
+    margin: 0 auto;
+
+    &.small {
+        max-width: 960px;
+    }
+}

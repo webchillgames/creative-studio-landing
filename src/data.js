@@ -51,3 +51,50 @@ export const RECENT_WORKS = [
     text: "Tote bag cornhole pork belly swag, cronut hoodie snackwave 90's messenger bag pour-over disrupt chartreuse. Vape ugh cardigan hell of. Vaporware umami master cleanse neutra, chartreuse flexitarian lo-fi selvage hella hoodie freegan gentrify. 8-bit air plant umami asymmetrical franzen semiotics before.",
   },
 ];
+
+export const OUR_CLIENTS = {
+  title: ["Fine Folks", "We’ve Worked", "With"],
+
+  companies: [
+    {
+      id: 1,
+      img: "/clients/balancha.png",
+      imgAccent: "/clients/balancha-red.png",
+    },
+    {
+      id: 2,
+      img: "/clients/chayhana.png",
+      imgAccent: "/clients/chayhana-red.png",
+    },
+    {
+      id: 3,
+      img: "/clients/cosmetics.png",
+      imgAccent: "/clients/cosmetics-red.png",
+    },
+    {
+      id: 4,
+      img: "/clients/dongolok.png",
+      imgAccent: "/clients/dongolok-red.png",
+    },
+    { id: 5, img: "/clients/eptep.png", imgAccent: "/clients/eptep-red.png" },
+    {
+      id: 6,
+      img: "/clients/judoboy.png",
+      imgAccent: "/clients/judoboy-red.png",
+    },
+    { id: 7, img: "/clients/kalgan.png", imgAccent: "/clients/kalgan-red.png" },
+    { id: 8, img: "/clients/kara.png", imgAccent: "/clients/kara-red.png" },
+    { id: 9, img: "/clients/kizil.png", imgAccent: "/clients/kizil-red.png" },
+    {
+      id: 10,
+      img: "/clients/meyman.png",
+      imgAccent: "/clients/meyman-red.png",
+    },
+    {
+      id: 11,
+      img: "/clients/tamaktan.png",
+      imgAccent: "/clients/tamaktan-red.png",
+    },
+    // { id: 12, img: "/clients/.png", imgAccent: "/clients/-red.png" },
+  ],
+};

@@ -1,29 +1,36 @@
 <template>
   <div class="s-recent-works">
-    <div class="s-recent-works__main-title" ref="titleRef">
-      <h2>Recent works</h2>
+    <div class="container small">
+      <div class="s-recent-works__main-title" ref="titleRef">
+        <h2>Recent works</h2>
+      </div>
+      <p class="s-recent-works__subtitle">We Offer Digital Solutions</p>
     </div>
-    <p class="s-recent-works__subtitle">We Offer Digital Solutions</p>
-
     <div
       class="s-recent-works__work work"
       v-for="v in DATA"
       :key="v.id"
       ref="workRef"
     >
-      <div class="work__block work__block--text">
-        <p class="work__type">{{ v.type }}</p>
-        <h3 class="work__title">
-          <span v-for="(t, i) in v.title" :key="i">{{ t }}</span>
-        </h3>
+      <div class="container small work__container">
+        <div class="work__block work__block--text">
+          <div>
+            <p class="work__type">{{ v.type }}</p>
+            <!-- <h3 class="work__title">
+              <span v-for="(t, i) in v.title" :key="i">{{ t }}</span>
+            </h3> -->
 
-        <p ref="textRef" class="work__text">{{ v.text }}</p>
+            <CColoringTitle :text="v.title" />
 
-        <CButton />
-      </div>
+            <p ref="textRef" class="work__text">{{ v.text }}</p>
+          </div>
 
-      <div class="work__block work__block--img">
-        <img :src="v.img" :alt="v.imgAlt" />
+          <CButton />
+        </div>
+
+        <div class="work__block work__block--img">
+          <img :src="v.img" :alt="v.imgAlt" />
+        </div>
       </div>
     </div>
   </div>
@@ -32,11 +39,14 @@
 <script>
 import { onMounted, ref } from "vue";
 // import { onIntersect } from "@/composables/onIntersect";
+
 import { RECENT_WORKS as DATA } from "@/data.js";
-import CButton from "../components/CButton.vue";
+
+import CButton from "@/components/CButton.vue";
+import CColoringTitle from "../components/CColoringTitle.vue";
 
 export default {
-  components: { CButton },
+  components: { CButton, CColoringTitle },
   setup() {
     const workRef = ref([]);
     const textRef = ref([]);
@@ -83,32 +93,42 @@ export default {
       textRef,
       DATA,
       CButton,
+      CColoringTitle,
     };
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .s-recent-works {
   padding-top: 120px;
   text-align: center;
+  position: relative;
 
   &__main-title {
     @include coveredText($dark-color);
     @include BlockCoveringText(#fff, 0.5s, 0s);
 
     h2 {
-      font-size: 50px;
-      line-height: 55px;
-      font-weight: 600;
       text-transform: uppercase;
       margin: 0;
+      font-size: 65px;
+      line-height: 1;
+      font-weight: 600;
+      letter-spacing: -2px;
     }
   }
 
   &__subtitle {
+    text-transform: uppercase;
+    font-size: 12px;
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: 1px;
     opacity: 0;
     transition: opacity 0.5s ease-in 0.3s;
+    margin-bottom: 60px;
+    margin-top: 5px;
 
     position: relative;
   }
@@ -125,14 +145,15 @@ export default {
 }
 
 .work {
-  display: flex;
-
   padding-bottom: 90px;
+  position: relative;
 
-  &:nth-child(2n) {
-    .work__block--text {
-      order: 1;
-    }
+  &__container {
+    display: flex;
+  }
+
+  &__wrapper {
+    position: absolute;
   }
 
   &__type {
@@ -149,44 +170,13 @@ export default {
     @include BlockCoveringText($accent-color, 0.2s);
   }
 
-  &__title {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    font-weight: 500;
-    letter-spacing: 2px;
-    line-height: 1;
-    font-size: 28px;
-
-    span {
-      margin: 0;
-      align-self: flex-start;
-      letter-spacing: 1px;
-
-      @include coveredText($dark-color);
-
-      @include BlockCoveringText($dark-color, 0.2s, 0.2s);
-    }
-
-    span:nth-child(2) {
-      @include BlockCoveringText($dark-color, 0.2s, 0.3s);
-    }
-
-    span:nth-child(3) {
-      @include BlockCoveringText($dark-color, 0.3s, 0.4s);
-    }
-
-    span + span {
-      margin-top: 4px;
-    }
-  }
-
   &__block {
     flex-shrink: 0;
     width: 50%;
     flex-basis: 50%;
     overflow: hidden;
     text-align: left;
+    min-height: 70vh;
 
     img {
       width: 100%;
@@ -201,12 +191,12 @@ export default {
   }
 
   &__block--img {
-    position: relative;
     background-color: #262626;
+    position: static;
 
     img {
       width: 0;
-      transition: width 0.5s ease-out 0.7s;
+      transition: width 0.5s ease-in 0.1s;
     }
   }
 
@@ -238,11 +228,17 @@ export default {
       transform: translate3d(0, 10%, 0);
     }
   }
+
+  &:nth-child(2n) {
+    .work__block--text {
+      order: 1;
+    }
+  }
 }
 
 .s-recent-works__work.active {
   .work__type::after,
-  .work__title span::after {
+  .c-coloring-title span::after {
     transform: translate3d(110%, 0, 0);
   }
 
